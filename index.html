@@ -13,6 +13,7 @@
       background-color: #000;
       color: white;
     }
+
     header {
       display: flex;
       justify-content: space-between;
@@ -21,8 +22,9 @@
       font-weight: bold;
       flex-wrap: wrap;
     }
+
     nav a {
-      margin-left: 20px;
+      margin-left: 15px;
       text-decoration: none;
       color: white;
       background-color: #333;
@@ -30,9 +32,11 @@
       border-radius: 20px;
       font-weight: bold;
     }
+
     nav a:hover {
       background-color: #444;
     }
+
     .theme-toggle {
       cursor: pointer;
       background-color: #333;
@@ -43,9 +47,11 @@
       font-weight: bold;
       margin-left: 20px;
     }
+
     .theme-toggle:hover {
       background-color: #555;
     }
+
     .hero {
       position: relative;
       min-height: 70vh;
@@ -58,6 +64,7 @@
       padding: 20px;
       overflow: hidden;
     }
+
     .hero::before {
       content: "";
       position: absolute;
@@ -69,14 +76,17 @@
       opacity: 0.2;
       z-index: 0;
     }
+
     .hero > * {
       position: relative;
       z-index: 1;
     }
+
     section {
       padding: 60px 40px;
       background-color: #111;
     }
+
     .contact-form input,
     .contact-form textarea {
       width: 100%;
@@ -87,6 +97,7 @@
       background-color: black;
       color: white;
     }
+
     .contact-form button {
       background-color: green;
       color: white;
@@ -96,54 +107,66 @@
       cursor: pointer;
       font-weight: bold;
     }
+
     .flex-container {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
     }
+
     .half {
       flex: 1;
       min-width: 300px;
       margin: 10px;
     }
+
     h2 {
       font-size: 2.5em;
       font-weight: 900;
       color: white;
     }
+
     p {
       color: #ccc;
     }
+
     footer {
       text-align: center;
       padding: 30px 20px;
       font-size: 0.9em;
       color: #555;
     }
+
     .light-mode {
       background-color: #fff;
       color: #000;
     }
+
     .light-mode header,
     .light-mode section {
       background-color: #eee;
     }
+
     .light-mode nav a {
       color: #000;
       background-color: #ccc;
     }
+
     .light-mode h2 {
       color: #111;
     }
+
     .light-mode p {
       color: #333;
     }
+
     .light-mode .contact-form input,
     .light-mode .contact-form textarea {
       background-color: #fff;
       color: #000;
       border: 1px solid #000;
     }
+
     .light-mode .theme-toggle {
       background-color: #ddd;
       color: #000;
@@ -158,6 +181,7 @@
       <a href="#contact">Contact</a>
       <a href="arduino.html">Arduino Tutorials</a>
       <a href="project-submission.html">Projeni Ekle</a>
+      <a href="projects.html">Projeleri Gör</a> <!-- ✅ Eklenen Buton -->
       <button class="theme-toggle" onclick="toggleTheme()">🌗</button>
     </nav>
   </header>
