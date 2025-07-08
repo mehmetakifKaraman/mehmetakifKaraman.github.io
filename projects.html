@@ -3,57 +3,96 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Arduino Projeleri</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
+  <title>Arduino Projects</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
       background-color: #000;
       color: white;
       margin: 0;
+      padding: 0;
+    }
+
+    header {
       padding: 20px;
+      background-color: #111;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .back-button {
+      text-decoration: none;
+      background-color: #333;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+
+    .back-button:hover {
+      background-color: #444;
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 30px;
+      margin: 30px 0;
       color: #4fc3f7;
     }
 
     .project-list {
-      max-width: 1200px;
-      margin: 0 auto;
+      max-width: 1000px;
+      margin: 0 auto 50px;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
+      padding: 0 20px;
     }
 
     .project-card {
-      background-color: #111;
+      background-color: #1a1a1a;
       border-radius: 10px;
       padding: 15px;
       color: white;
-      border: 1px solid #333;
     }
 
     .project-card img {
       width: 100%;
-      height: auto;
       border-radius: 8px;
       margin-bottom: 10px;
     }
 
     .project-card a {
-      display: inline-block;
-      margin-top: 10px;
       color: #4fc3f7;
-      text-decoration: none;
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      color: #666;
+      font-size: 0.9em;
+      padding: 20px 0;
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
-  <h1>Tüm Arduino Projeleri</h1>
-  <div class="project-list" id="projectList"></div>
+
+  <header>
+    <a href="index.html" class="back-button">← Back to Home</a>
+  </header>
+
+  <h1>Arduino Projects</h1>
+
+  <div class="project-list" id="projectList">
+    <!-- Projects will appear here -->
+  </div>
+
+  <footer>
+    © 2025 Mehmet Akif Karaman - All rights reserved.
+  </footer>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -83,13 +122,14 @@
         card.className = "project-card";
         card.innerHTML = `
           ${proj.image ? `<img src="${proj.image}" alt="">` : ""}
-          <h3>${proj.title || "Proje Adı Yok"}</h3>
-          <p>${proj.description || "Açıklama yok."}</p>
-          ${proj.link ? `<a href="${proj.link}" target="_blank">Projeyi Görüntüle</a>` : ""}
+          <h3>${proj.title}</h3>
+          <p>${proj.description}</p>
+          ${proj.link ? `<a href="${proj.link}" target="_blank">View Project</a>` : ""}
         `;
         list.appendChild(card);
       });
     });
   </script>
+
 </body>
 </html>
