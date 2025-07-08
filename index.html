@@ -3,22 +3,153 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mehmet</title>
+  <title>Mehmet Akif Karaman</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      background-color: black;
+      font-family: 'Inter', sans-serif;
+      background-color: #000;
       color: white;
-      font-family: Arial, sans-serif;
-      height: 100vh;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      font-weight: bold;
+    }
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: white;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* --- Hero (GIF) --- */
+    .hero {
+      position: relative;
+      height: 80vh;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 48px;
+      text-align: center;
+    }
+    .hero .gif-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+      opacity: 0.3;
+    }
+    .hero-text {
+      z-index: 2;
+      font-size: 2em;
+      font-weight: bold;
+      padding: 20px;
+    }
+
+    section {
+      padding: 60px 40px;
+      background-color: #111;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid #fff;
+      border-radius: 20px;
+      background-color: black;
+      color: white;
+    }
+    .contact-form button {
+      background-color: green;
+      color: white;
+      padding: 10px 25px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .flex-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    .half {
+      flex: 1;
+      min-width: 300px;
+      margin: 10px;
+    }
+    h2 {
+      font-size: 2.5em;
+      font-weight: 900;
+      color: white;
+    }
+    p {
+      color: #ccc;
     }
   </style>
 </head>
 <body>
-  Mehmet
+
+  <header>
+    <div>https://mehmetakifkaraman.github.io/</div>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- ANASAYFA (GIF) -->
+  <div class="hero">
+    <img src="1f175b87-0059-4c8f-8f8d-6ef3cbf82044.gif" class="gif-bg" alt="Code GIF">
+    <div class="hero-text">
+      &lt;WELCOME TO MY SITE WHERE I WILL SHARE MY SOFTWARE PROJECTS AND OTHER IDEAS WITH YOU.&gt;
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="flex-container">
+      <div class="half">
+        <h2>WHO WE ARE</h2>
+        <p>Hello, I am Mehmet Akif Karaman. I am 14 years old, I live in Turkey. I am interested in software. Here I will share my own projects and other blogs with you.</p>
+      </div>
+      <div class="half" style="font-size: 40px; text-align: center; padding-top: 40px;">
+        &lt;/&gt;
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="flex-container">
+      <div class="half">
+        <h2>CONTACT US</h2>
+        <p>You can reach me via email:</p>
+        <p><strong>mehmetakifkaraman24@gmail.com</strong></p>
+        <form class="contact-form">
+          <label>Name (required)</label><br />
+          <input type="text" placeholder="First Name" required />
+          <input type="text" placeholder="Last Name" required /><br />
+          <label>Email (required)</label><br />
+          <input type="email" required /><br />
+          <label>Message (required)</label><br />
+          <textarea rows="4" required></textarea><br />
+          <button type="submit">SEND</button>
+        </form>
+      </div>
+      <div class="half" style="display:flex; align-items:center; justify-content:center;">
+        <h2>I Am Mehmet Akif</h2>
+      </div>
+    </div>
+  </section>
+
 </body>
 </html>
