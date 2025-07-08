@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mehmet Akif Karaman</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
+  <link rel="icon" href="favicon.png" type="image/png" />
   <style>
     body {
       margin: 0;
@@ -47,6 +48,21 @@
 
     nav a:hover {
       text-decoration: underline;
+    }
+
+    .theme-toggle {
+      cursor: pointer;
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      margin-left: 20px;
+    }
+
+    .theme-toggle:hover {
+      background-color: #555;
     }
 
     .hero {
@@ -115,6 +131,30 @@
       font-size: 0.9em;
       color: #555;
     }
+
+    /* Light Mode */
+    .light-mode {
+      background-color: #fff;
+      color: #000;
+    }
+
+    .light-mode header,
+    .light-mode section {
+      background-color: #eee;
+    }
+
+    .light-mode nav a {
+      color: #000;
+    }
+
+    .light-mode .theme-toggle {
+      background-color: #ddd;
+      color: black;
+    }
+
+    .light-mode .theme-toggle:hover {
+      background-color: #ccc;
+    }
   </style>
 </head>
 <body>
@@ -125,12 +165,16 @@
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
       <a href="arduino.html">Arduino Tutorials</a>
+      <button class="theme-toggle" onclick="toggleTheme()">🌗</button>
     </nav>
   </header>
 
   <!-- HERO -->
   <div class="hero">
     &lt;WELCOME TO MY SITE WHERE I WILL SHARE MY SOFTWARE PROJECTS AND OTHER IDEAS WITH YOU.&gt;
+
+    <!-- Typing GIF -->
+    <img src="https://media1.tenor.com/m/1mwdqr51emcAAAAd/test-typing.gif" alt="typing gif" style="margin-top:20px; max-width: 100%; border-radius: 10px;" />
   </div>
 
   <!-- ABOUT -->
@@ -173,6 +217,13 @@
   <footer>
     © 2025 Mehmet Akif Karaman - All rights reserved.
   </footer>
+
+  <!-- JavaScript for Theme Toggle -->
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('light-mode');
+    }
+  </script>
 
 </body>
 </html>
