@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit Your Project</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #000;
+      color: white;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #4fc3f7;
+    }
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #111;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+      background-color: #222;
+      color: white;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #4fc3f7;
+      border: none;
+      border-radius: 20px;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .project-list {
+      max-width: 800px;
+      margin: 40px auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .project-card {
+      background-color: #1a1a1a;
+      border-radius: 10px;
+      padding: 15px;
+      color: white;
+    }
+    .project-card img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Submit Your Arduino Project</h1>
+  <form id="projectForm">
+    <input type="text" id="title" placeholder="Project Title" required />
+    <textarea id="description" placeholder="Project Description" required></textarea>
+    <input type="url" id="image" placeholder="Image URL (optional)" />
+    <input type="url" id="link" placeholder="Project Link (optional)" />
+    <button type="submit">Submit</button>
+  </form>
+
+  <div class="project-list" id="projectList"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyARCnqlYtrOYhoJMqcYFcws18hqeYdxOHg",
+      authDomain: "akif-arduino.firebaseapp.com",
+      projectId: "akif-arduino",
+      storageBucket: "akif-arduino.firebasestorage.app",
+      messagingSenderId: "72071750731",
+      appId: "1:72071750731:web:ab902701e94979292a99ce",
+      measurementId: "G-WQ6DWZBNWW"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const projectRef = ref(db, "projects");
+
+    const form = document.getElementById("projectForm");
+    const list = document.getElementById("projectList");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const data = {
+        title: form.title.value,
+        description: form.description.value,
+        image: form.image.value,
+        link: form.link.value
+      };
+      push(projectRef, data);
+      form.reset();
+    });
+
+    onValue(projectRef, (snapshot) => {
+      list.innerHTML = "";
+      snapshot.forEach((child) => {
+        const proj = child.val();
+        const card = document.createElement("div");
+        card.className = "project-card";
+        card.innerHTML = `
+          ${proj.image ? `<img src="${proj.image}" alt="">` : ""}
+          <h3>${proj.title}</h3>
+          <p>${proj.description}</p>
+          ${proj.link ? `<a href="${proj.link}" target="_blank">View Project</a>` : ""}
+        `;
+        list.appendChild(card);
+      });
+    });
+  </script>
+</body>
+</html>
