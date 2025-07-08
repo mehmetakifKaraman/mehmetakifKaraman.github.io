@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Submit Your Project</title>
+  <title>Submit Your Arduino Project</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
   <style>
     body {
@@ -13,12 +13,10 @@
       margin: 0;
       padding: 20px;
     }
-
     h1 {
       text-align: center;
       color: #4fc3f7;
     }
-
     form {
       max-width: 600px;
       margin: 0 auto;
@@ -26,7 +24,6 @@
       padding: 20px;
       border-radius: 10px;
     }
-
     input, textarea {
       width: 100%;
       padding: 10px;
@@ -36,7 +33,6 @@
       background-color: #222;
       color: white;
     }
-
     button {
       padding: 10px 20px;
       background-color: #4fc3f7;
@@ -45,27 +41,6 @@
       color: black;
       font-weight: bold;
       cursor: pointer;
-    }
-
-    .project-list {
-      max-width: 800px;
-      margin: 40px auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .project-card {
-      background-color: #1a1a1a;
-      border-radius: 10px;
-      padding: 15px;
-      color: white;
-    }
-
-    .project-card img {
-      width: 100%;
-      border-radius: 8px;
-      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -77,15 +52,13 @@
     <input type="text" id="title" placeholder="Project Title" required />
     <textarea id="description" placeholder="Project Description" required></textarea>
     <input type="url" id="image" placeholder="Image URL (optional)" />
-    <input type="url" id="link" placeholder="Project Link (optional)" />
+    <input type="url" id="link" placeholder="External Link (optional)" />
     <button type="submit">Submit</button>
   </form>
 
-  <div class="project-list" id="projectList"></div>
-
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyARCnqlYtrOYhoJMqcYFcws18hqeYdxOHg",
@@ -102,7 +75,6 @@
     const projectRef = ref(db, "projects");
 
     const form = document.getElementById("projectForm");
-    const list = document.getElementById("projectList");
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -112,28 +84,12 @@
         description: form.description.value,
         image: form.image.value,
         link: form.link.value,
-        secureKey: "akif123" // 🔐 Firebase güvenlik anahtarı
+        secureKey: "akif123"
       };
 
       push(projectRef, data);
       form.reset();
-      alert("✅ Proje gönderildi!");
-    });
-
-    onValue(projectRef, (snapshot) => {
-      list.innerHTML = "";
-      snapshot.forEach((child) => {
-        const proj = child.val();
-        const card = document.createElement("div");
-        card.className = "project-card";
-        card.innerHTML = `
-          ${proj.image ? `<img src="${proj.image}" alt="">` : ""}
-          <h3>${proj.title}</h3>
-          <p>${proj.description}</p>
-          ${proj.link ? `<a href="${proj.link}" target="_blank" style="color:#4fc3f7;">View Project</a>` : ""}
-        `;
-        list.appendChild(card);
-      });
+      alert("✅ Your project has been submitted!");
     });
   </script>
 
