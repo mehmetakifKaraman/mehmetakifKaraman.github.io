@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Submit Your Arduino Project</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submit Your Project</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
   <style>
     body {
@@ -11,15 +11,15 @@
       background-color: #000;
       color: white;
       margin: 0;
-      padding: 0;
     }
 
     header {
-      padding: 20px;
-      background-color: #111;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 20px 40px;
+      background-color: #111;
+      font-weight: bold;
       flex-wrap: wrap;
     }
 
@@ -27,7 +27,7 @@
       text-decoration: none;
       background-color: #333;
       color: white;
-      padding: 8px 16px;
+      padding: 6px 12px;
       border-radius: 20px;
       font-weight: bold;
     }
@@ -38,7 +38,8 @@
 
     h1 {
       text-align: center;
-      margin: 30px 0;
+      margin: 40px 0 20px;
+      font-size: 2.2em;
       color: #4fc3f7;
     }
 
@@ -46,22 +47,22 @@
       max-width: 600px;
       margin: 0 auto;
       background-color: #111;
-      padding: 20px;
-      border-radius: 10px;
+      padding: 30px;
+      border-radius: 20px;
     }
 
     input, textarea {
       width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 8px;
-      border: none;
-      background-color: #222;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      border: 1px solid #444;
+      background-color: #000;
       color: white;
     }
 
     button {
-      padding: 10px 20px;
+      padding: 12px 24px;
       background-color: #4fc3f7;
       border: none;
       border-radius: 20px;
@@ -70,11 +71,15 @@
       cursor: pointer;
     }
 
+    button:hover {
+      background-color: #38bdf8;
+    }
+
     footer {
       text-align: center;
-      color: #666;
+      padding: 30px 20px;
       font-size: 0.9em;
-      padding: 20px 0;
+      color: #555;
       margin-top: 40px;
     }
   </style>
@@ -83,9 +88,10 @@
 
   <header>
     <a href="index.html" class="back-button">← Back to Home</a>
+    <div><strong>Submit Your Arduino Project</strong></div>
   </header>
 
-  <h1>Submit Your Arduino Project</h1>
+  <h1>Share Your Project</h1>
 
   <form id="projectForm">
     <input type="text" id="title" placeholder="Project Title" required />
@@ -125,16 +131,4 @@
       const data = {
         title: form.title.value,
         description: form.description.value,
-        image: form.image.value,
-        link: form.link.value,
-        secureKey: "akif123"
-      };
-
-      push(projectRef, data);
-      form.reset();
-      alert("✅ Your project has been submitted!");
-    });
-  </script>
-
-</body>
-</html>
+        image: form.image.val
