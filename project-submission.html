@@ -154,6 +154,7 @@
     © 2025 Mehmet Akif Karaman - All rights reserved.
   </footer>
 
+  <!-- ✅ Firebase bağlantısı ve proje gönderme -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
@@ -161,6 +162,7 @@
     const firebaseConfig = {
       apiKey: "AIzaSyARCnqlYtrOYhoJMqcYFcws18hqeYdxOHg",
       authDomain: "akif-arduino.firebaseapp.com",
+      databaseURL: "https://akif-arduino-default-rtdb.firebaseio.com",
       projectId: "akif-arduino",
       storageBucket: "akif-arduino.appspot.com",
       messagingSenderId: "72071750731",
@@ -178,19 +180,26 @@
       e.preventDefault();
 
       const data = {
-        title: form.title.value,
-        description: form.description.value,
-        image: form.image.value,
-        link: form.link.value,
+        title: document.getElementById("title").value,
+        description: document.getElementById("description").value,
+        image: document.getElementById("image").value,
+        link: document.getElementById("link").value,
         secureKey: "akif123"
       };
 
-      push(projectRef, data);
-      form.reset();
-      alert("✅ Your project has been submitted!");
+      push(projectRef, data)
+        .then(() => {
+          alert("✅ Your project has been submitted!");
+          form.reset();
+        })
+        .catch((err) => {
+          console.error("❌ Firebase Error:", err);
+          alert("An error occurred. Please try again.");
+        });
     });
   </script>
 
+  <!-- 🌗 Tema geçiş scripti -->
   <script>
     function toggleTheme() {
       document.body.classList.toggle("light-mode");
