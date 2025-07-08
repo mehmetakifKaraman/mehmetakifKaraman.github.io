@@ -117,14 +117,14 @@
         <h2>CONTACT US</h2>
         <p>You can reach me via email:</p>
         <p><strong>mehmetakifkaraman248@gmail.com</strong></p>
-        <form class="contact-form">
+        <form class="contact-form" action="https://formspree.io/f/myzjqpnr" method="POST">
           <label>Name (required)</label><br />
-          <input type="text" placeholder="First Name" required />
-          <input type="text" placeholder="Last Name" required /><br />
+          <input type="text" name="first-name" placeholder="First Name" required />
+          <input type="text" name="last-name" placeholder="Last Name" required /><br />
           <label>Email (required)</label><br />
-          <input type="email" required /><br />
+          <input type="email" name="email" required /><br />
           <label>Message (required)</label><br />
-          <textarea rows="4" required></textarea><br />
+          <textarea name="message" rows="4" required></textarea><br />
           <button type="submit">SEND</button>
         </form>
       </div>
