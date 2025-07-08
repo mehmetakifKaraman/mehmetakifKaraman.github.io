@@ -2,53 +2,127 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mehmet Akif Karaman</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      font-family: 'Courier New', monospace;
-      background-color: #0d1117;
-      color: #c9d1d9;
-      background-image: url('https://media1.tenor.com/m/1mwdqr51emcAAAAd/test-typing.gif'); /* Arka plan kod görseli */
-      background-size: cover;
-      background-position: center;
+      font-family: 'Inter', sans-serif;
+      background-color: #eceae4;
+      color: #000;
     }
     header {
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-    nav a {
-      color: #58a6ff;
-      margin-left: 20px;
-      text-decoration: none;
+      padding: 20px 40px;
       font-weight: bold;
     }
-    .hero {
-      text-align: center;
-      padding: 100px 20px;
-      background-color: rgba(0, 0, 0, 0.6);
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: black;
     }
-    .hero h1 {
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .hero {
+      background: url('https://i.ibb.co/ckCyPfR/code-bg.jpg') no-repeat center center/cover;
+      height: 80vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
       font-size: 2em;
-      color: #ffffff;
+      font-weight: bold;
+      text-align: center;
+      padding: 0 20px;
+    }
+    section {
+      padding: 60px 40px;
+    }
+    .contact-form input, .contact-form textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid #000;
+      border-radius: 20px;
+      font-family: inherit;
+    }
+    .contact-form button {
+      background-color: green;
+      color: white;
+      padding: 10px 25px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .flex-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    .half {
+      flex: 1;
+      min-width: 300px;
+      margin: 10px;
+    }
+    h2 {
+      font-size: 2.5em;
+      font-weight: 900;
     }
   </style>
 </head>
 <body>
+
   <header>
-    <div><strong>mehmetakifkaraman.github.io</strong></div>
+    <div>https://mehmetakifkaraman.github.io/</div>
     <nav>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
-  <section class="hero">
-    <h1>&lt;WELCOME TO MY SITE WHERE I WILL SHARE MY SOFTWARE PROJECTS AND OTHER IDEAS WITH YOU.&gt;</h1>
+  <div class="hero">
+    &lt;WELCOME TO MY SITE WHERE I WILL SHARE MY SOFTWARE PROJECTS AND OTHER IDEAS WITH YOU.&gt;
+  </div>
+
+  <section id="about">
+    <div class="flex-container">
+      <div class="half">
+        <h2>WHO WE ARE</h2>
+        <p>Hello, I am Mehmet Akif Karaman. I am 14 years old, I live in Turkey. I am interested in software. Here I will share my own projects and other blogs with you.</p>
+      </div>
+      <div class="half" style="font-size: 40px; text-align: center; padding-top: 40px;">
+        &lt;/&gt;
+      </div>
+    </div>
   </section>
+
+  <section id="contact">
+    <div class="flex-container">
+      <div class="half">
+        <h2>CONTACT US</h2>
+        <p>Let people know what to reach out about and what to expect after contacting you.</p>
+        <p><strong>mehmetakifkaraman24@gmail.com</strong></p>
+        <form class="contact-form">
+          <label>Name (required)</label><br />
+          <input type="text" placeholder="First Name" required />
+          <input type="text" placeholder="Last Name" required /><br />
+          <label>Email (required)</label><br />
+          <input type="email" required /><br />
+          <label>Message (required)</label><br />
+          <textarea rows="4" required></textarea><br />
+          <button type="submit">SEND</button>
+        </form>
+      </div>
+      <div class="half" style="display:flex; align-items:center; justify-content:center;">
+        <h2>I Am Mehmet Akif</h2>
+      </div>
+    </div>
+  </section>
+
 </body>
 </html>
