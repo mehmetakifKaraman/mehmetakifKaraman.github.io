@@ -11,6 +11,7 @@
       background-color: #000;
       color: white;
       margin: 0;
+      transition: background-color 0.3s, color 0.3s;
     }
 
     header {
@@ -34,6 +35,20 @@
 
     .back-button:hover {
       background-color: #444;
+    }
+
+    .theme-toggle {
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .theme-toggle:hover {
+      background-color: #555;
     }
 
     h1 {
@@ -80,7 +95,41 @@
       padding: 30px 20px;
       font-size: 0.9em;
       color: #555;
-      margin-top: 40px;
+    }
+
+    /* Light Mode Styles */
+    .light-mode {
+      background-color: #fff;
+      color: #000;
+    }
+
+    .light-mode header {
+      background-color: #eee;
+    }
+
+    .light-mode .back-button,
+    .light-mode .theme-toggle {
+      background-color: #ccc;
+      color: #000;
+    }
+
+    .light-mode form {
+      background-color: #fff;
+    }
+
+    .light-mode input,
+    .light-mode textarea {
+      background-color: #f4f4f4;
+      color: #000;
+      border: 1px solid #aaa;
+    }
+
+    .light-mode h1 {
+      color: #007acc;
+    }
+
+    .light-mode footer {
+      color: #444;
     }
   </style>
 </head>
@@ -88,7 +137,7 @@
 
   <header>
     <a href="index.html" class="back-button">← Back to Home</a>
-    <div><strong>Submit Your Arduino Project</strong></div>
+    <button class="theme-toggle" onclick="toggleTheme()">🌗</button>
   </header>
 
   <h1>Share Your Project</h1>
@@ -131,4 +180,22 @@
       const data = {
         title: form.title.value,
         description: form.description.value,
-        image: form.image.val
+        image: form.image.value,
+        link: form.link.value,
+        secureKey: "akif123"
+      };
+
+      push(projectRef, data);
+      form.reset();
+      alert("✅ Your project has been submitted!");
+    });
+  </script>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle("light-mode");
+    }
+  </script>
+
+</body>
+</html>
