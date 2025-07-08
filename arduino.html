@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arduino Eğitimleri - Mehmet Akif Karaman</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arduino Tutorials - Mehmet Akif Karaman</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
@@ -16,10 +16,19 @@
 
     header {
       background: #111;
-      padding: 20px 40px;
+      padding: 20px 20px;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    @media (min-width: 600px) {
+      header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+      }
     }
 
     nav a {
@@ -34,7 +43,9 @@
     }
 
     .container {
-      padding: 40px;
+      padding: 20px;
+      max-width: 900px;
+      margin: 0 auto;
     }
 
     h1 {
@@ -78,12 +89,17 @@
       color: #555;
       font-size: 0.9em;
     }
+
+    a.home-link {
+      color: white;
+      text-decoration: none;
+    }
   </style>
 </head>
 <body>
 
   <header>
-    <div><a href="index.html" style="color:white; text-decoration:none;">← Ana Sayfa</a></div>
+    <div><a class="home-link" href="index.html">← Home</a></div>
     <nav>
       <a href="index.html">Home</a>
       <a href="arduino.html">Arduino</a>
@@ -92,55 +108,55 @@
   </header>
 
   <div class="container">
-    <h1>Arduino Eğitimleri</h1>
-    <p>Bu sayfada temel Arduino projelerini ve derslerini adım adım bulabilirsiniz.</p>
+    <h1>Arduino Tutorials</h1>
+    <p>On this page, you'll find basic Arduino lessons and projects step-by-step.</p>
 
-    <!-- DERS 1 -->
-    <h2>Ders 1: Arduino Nedir?</h2>
-    <p>Arduino; sensörler, butonlar, motorlar gibi donanımlarla çalışmamıza olanak tanıyan açık kaynaklı bir geliştirme platformudur.</p>
+    <!-- LESSON 1 -->
+    <h2>Lesson 1: What is Arduino?</h2>
+    <p>Arduino is an open-source development platform that allows us to work with hardware such as sensors, buttons, and motors.</p>
 
-    <!-- DERS 2 -->
-    <h2>Ders 2: LED Yakma</h2>
-    <h3>Gerekli Malzemeler:</h3>
+    <!-- LESSON 2 -->
+    <h2>Lesson 2: Blinking an LED</h2>
+    <h3>Required Components:</h3>
     <ul>
       <li>Arduino UNO</li>
-      <li>USB kablo</li>
+      <li>USB cable</li>
       <li>LED</li>
-      <li>220 ohm direnç</li>
-      <li>Jumper kablolar</li>
+      <li>220 ohm resistor</li>
+      <li>Jumper wires</li>
       <li>Breadboard</li>
     </ul>
 
-    <h3>Bağlantı:</h3>
-    <p>LED'in uzun bacağını Arduino'nun 13 numaralı pinine, kısa bacağını GND'ye bağla. Araya 220 ohm direnç koymayı unutma.</p>
+    <h3>Connection:</h3>
+    <p>Connect the long leg of the LED to pin 13 of the Arduino and the short leg to GND. Don’t forget to place a 220-ohm resistor in between.</p>
     
-    <h3>Kod:</h3>
+    <h3>Code:</h3>
     <pre><code>void setup() {
   pinMode(13, OUTPUT);
 }
 
 void loop() {
-  digitalWrite(13, HIGH); // LED yanar
+  digitalWrite(13, HIGH); // LED on
   delay(1000);
-  digitalWrite(13, LOW);  // LED söner
+  digitalWrite(13, LOW);  // LED off
   delay(1000);
 }</code></pre>
 
-    <h3>Sonuç:</h3>
-    <p>LED her saniye yanıp söner.</p>
+    <h3>Result:</h3>
+    <p>The LED blinks every second.</p>
 
-    <!-- DERS 3 -->
-    <h2>Ders 3: Buton ile LED Kontrolü</h2>
-    <h3>Gerekli Malzemeler:</h3>
+    <!-- LESSON 3 -->
+    <h2>Lesson 3: Controlling LED with a Button</h2>
+    <h3>Required Components:</h3>
     <ul>
       <li>1 x LED</li>
-      <li>1 x Buton</li>
-      <li>220 ohm direnç</li>
-      <li>10k ohm direnç</li>
-      <li>Breadboard ve jumper kablolar</li>
+      <li>1 x Button</li>
+      <li>220 ohm resistor</li>
+      <li>10k ohm resistor</li>
+      <li>Breadboard and jumper wires</li>
     </ul>
 
-    <h3>Kod:</h3>
+    <h3>Code:</h3>
     <pre><code>const int ledPin = 13;
 const int buttonPin = 2;
 
@@ -154,19 +170,19 @@ void loop() {
   digitalWrite(ledPin, buttonState);
 }</code></pre>
 
-    <h3>Açıklama:</h3>
-    <p>Butona bastığınızda LED yanar, bıraktığınızda söner.</p>
+    <h3>Explanation:</h3>
+    <p>When the button is pressed, the LED lights up. When released, it turns off.</p>
 
-    <!-- DEVAM -->
-    <h2>Yakında:</h2>
-    <p>– Buzzer kullanımı<br>
-       – LDR ile ışık sensörü<br>
-       – DHT11 ile sıcaklık/ nem ölçümü<br>
-       – LCD ekran bağlantısı<br>
-       – Bluetooth ile kontrol</p>
+    <!-- COMING SOON -->
+    <h2>Coming Soon:</h2>
+    <p>– Using a buzzer<br>
+       – Light sensor with LDR<br>
+       – Temperature/humidity measurement with DHT11<br>
+       – LCD screen integration<br>
+       – Bluetooth control</p>
 
     <footer>
-      © 2025 Mehmet Akif Karaman - Tüm hakları saklıdır.
+      © 2025 Mehmet Akif Karaman - All rights reserved.
     </footer>
   </div>
 
