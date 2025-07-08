@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Projeni Ekle</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="https://w7.pngwing.com/pngs/92/275/png-transparent-computer-icons-computer-programming-web-development-content-management-system-coding-miscellaneous-angle-text.png" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       background-color: #111;
       color: white;
-      font-family: sans-serif;
+      font-family: 'Inter', sans-serif;
       padding: 20px;
     }
+
     h1 {
       text-align: center;
       margin-bottom: 30px;
     }
+
     form {
       max-width: 600px;
       margin: auto;
@@ -22,6 +26,7 @@
       padding: 20px;
       border-radius: 12px;
     }
+
     input, textarea {
       width: 100%;
       padding: 12px;
@@ -31,6 +36,7 @@
       background-color: #000;
       color: white;
     }
+
     button {
       padding: 12px 24px;
       background-color: green;
@@ -38,14 +44,25 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      font-weight: bold;
     }
+
     button:hover {
       background-color: darkgreen;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      color: #666;
+      font-size: 0.9em;
     }
   </style>
 </head>
 <body>
+
   <h1>Projeni Ekle</h1>
+
   <form id="projectForm">
     <input type="text" name="name" placeholder="Adınız" required />
     <input type="text" name="projectName" placeholder="Proje Adı" required />
@@ -54,12 +71,50 @@
     <button type="submit">Gönder</button>
   </form>
 
-  <script>
-    document.getElementById('projectForm').addEventListener('submit', function(e) {
+  <footer>
+    © 2025 Mehmet Akif Karaman – Tüm hakları saklıdır.
+  </footer>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyARCnqlYtrOYhoJMqcYFcws18hqeYdxOHg",
+      authDomain: "akif-arduino.firebaseapp.com",
+      projectId: "akif-arduino",
+      storageBucket: "akif-arduino.appspot.com",
+      messagingSenderId: "72071750731",
+      appId: "1:72071750731:web:ab902701e94979292a99ce",
+      measurementId: "G-WQ6DWZBNWW"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    const form = document.getElementById('projectForm');
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
-      alert("Projen gönderildi! (Firebase bağlantısı yakında aktif)");
-      // Buraya Firebase kodu eklenecek.
+
+      const name = form.name.value;
+      const projectName = form.projectName.value;
+      const description = form.description.value;
+      const link = form.link.value;
+
+      const newProjectRef = ref(database, 'projects/');
+      push(newProjectRef, {
+        name,
+        projectName,
+        description,
+        link,
+        timestamp: Date.now()
+      });
+
+      alert('Projen Firebase\'e başarıyla gönderildi!');
+      form.reset();
     });
   </script>
+
 </body>
 </html>
