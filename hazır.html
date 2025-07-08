@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mehmet Akif Karaman | Yazılım Projeleri</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --accent: #f59e0b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        nav a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent);
+        }
+        
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--accent);
+        }
+        
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .name-fields {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .name-fields .form-group {
+            flex: 1;
+        }
+        
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: var(--secondary);
+        }
+        
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .about-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .name-fields {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <nav>
+                <a href="#about">Hakkımda</a>
+                <a href="#projects">Projeler</a>
+                <a href="#contact">İletişim</a>
+            </nav>
+            <div class="hero">
+                <h1>Mehmet Akif Karaman</h1>
+                <p>Yazılım projelerimi ve fikirlerimi paylaştığım kişisel siteme hoş geldiniz</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="about">
+            <h2>Hakkımda</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Merhaba, ben Mehmet Akif Karaman! 14 yaşındayım, Türkiye'de yaşıyorum ve yazılımla ilgileniyorum. Burada kendi projelerimi ve diğer blog yazılarımı sizlerle paylaşacağım.</p>
+                    <p>Yazılım dünyasına olan ilgim küçük yaşlarda başladı ve kendimi sürekli geliştirmeye devam ediyorum. Özellikle web geliştirme ve yapay zeka alanlarına ilgi duyuyorum.</p>
+                </div>
+                <!-- Profil fotoğrafı buraya gelecek -->
+                <img src="profile.jpg" alt="Mehmet Akif Karaman" class="profile-img">
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2>Projelerim</h2>
+            <p>Şu anda üzerinde çalıştığım projeler yakında burada paylaşılacaktır.</p>
+            <!-- Proje kartları buraya eklenecek -->
+        </section>
+
+        <section id="contact">
+            <h2>İletişim</h2>
+            <div class="contact-form">
+                <form>
+                    <div class="name-fields">
+                        <div class="form-group">
+                            <label for="firstName">Ad*</label>
+                            <input type="text" id="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Soyad</label>
+                            <input type="text" id="lastName">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email*</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Mesajınız*</label>
+                        <textarea id="message" required></textarea>
+                    </div>
+                    <button type="submit">GÖNDER</button>
+                </form>
+            </div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <p>Veya doğrudan email atabilirsiniz: <a href="mailto:mehmetakifkaraman2@gmail.com">mehmetakifkaraman2@gmail.com</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Mehmet Akif Karaman. Tüm hakları saklıdır.</p>
+        <p style="margin-top: 0.5rem;">GitHub: <a href="https://github.com/mehmetakifkaraman" style="color: var(--accent);">mehmetakifkaraman</a></p>
+    </footer>
+</body>
+</html>
