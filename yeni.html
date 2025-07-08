@@ -1,99 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mehmet Akif Karaman's Arduino Projects</title>
-  <style>
-    /* Temel stil ayarları */
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f0f4f8;
-      color: #333;
-      margin: 0;
-      padding: 0;
-      line-height: 1.6;
-    }
-    header {
-      background-color: #007acc;
-      color: white;
-      padding: 20px 0;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    header h1 {
-      margin: 0;
-      font-weight: 700;
-      letter-spacing: 2px;
-    }
-    nav {
-      margin-top: 10px;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 15px;
-      font-weight: 600;
-      transition: color 0.3s ease;
-    }
-    nav a:hover {
-      color: #ffdd57;
-    }
-    main {
-      max-width: 900px;
-      margin: 30px auto;
-      padding: 0 20px;
-    }
-    h2 {
-      color: #007acc;
-      margin-bottom: 10px;
-    }
-    p {
-      font-size: 1.1rem;
-    }
-    footer {
-      background-color: #222;
-      color: #aaa;
-      text-align: center;
-      padding: 15px 10px;
-      margin-top: 40px;
-      font-size: 0.9rem;
-    }
-    /* Responsive */
-    @media(max-width: 600px) {
-      nav a {
-        display: block;
-        margin: 8px 0;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sizin Portfolyonuz</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background: linear-gradient(135deg, #6e48aa 0%, #9d50bb 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+        .gallery img {
+            width: 300px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Mehmet Akif Karaman</h1>
-    <nav>
-      <a href="#">Home</a>
-      <a href="#projects">Projects</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
-  <main>
-    <section id="projects">
-      <h2>Arduino Projects</h2>
-      <p>Welcome to my Arduino projects portfolio. Here I share my latest and most exciting works with detailed explanations and code samples.</p>
+    <header>
+        <h1>SİZİN BAŞLIĞINIZ</h1>
+        <p>Kısa bir tanıtım metni</p>
+    </header>
+
+    <section class="gallery">
+        <!-- FOTOĞRAFLAR BURAYA GELECEK -->
+        <!-- Örnek: <img src="foto1.jpg" alt="Açıklama"> -->
     </section>
-    <section id="about">
-      <h2>About Me</h2>
-      <p>Hi! I am Mehmet Akif Karaman, an electronics hobbyist passionate about Arduino and embedded systems. I love to learn and share projects here.</p>
-    </section>
-    <section id="contact">
-      <h2>Contact</h2>
-      <p>If you want to reach me, send me an email at <a href="mailto:mehmet@example.com">mehmet@example.com</a></p>
-    </section>
-  </main>
-  <footer>
-    &copy; 2025 Mehmet Akif Karaman. All rights reserved.
-  </footer>
+
+    <footer>
+        &copy; 2024 Sizin İsminiz
+    </footer>
 </body>
 </html>
