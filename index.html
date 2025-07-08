@@ -6,8 +6,8 @@
   <title>Mehmet Akif Karaman</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
   
-  <!-- Favicon (</> görselli) -->
-  <link rel="icon" href="https://raw.githubusercontent.com/MehmetAkifKaraman/assets/main/favicon.png" type="image/png" />
+  <!-- ✅ Favicon -->
+  <link rel="icon" href="https://w7.pngwing.com/pngs/92/275/png-transparent-computer-icons-computer-programming-web-development-content-management-system-coding-miscellaneous-angle-text.png" type="image/png" />
 
   <style>
     body {
@@ -35,6 +35,9 @@
 
     nav {
       margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
     }
 
     @media (min-width: 600px) {
@@ -66,6 +69,22 @@
 
     .theme-toggle:hover {
       background-color: #555;
+    }
+
+    .lang-select {
+      margin-left: 20px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      background-color: #333;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .light-mode .lang-select {
+      background-color: #ddd;
+      color: black;
     }
 
     .hero {
@@ -203,6 +222,13 @@
       <a href="#contact">Contact</a>
       <a href="arduino.html">Arduino Tutorials</a>
       <button class="theme-toggle" onclick="toggleTheme()">🌗</button>
+
+      <!-- 🌐 Language Selector -->
+      <select onchange="changeLanguage(this.value)" class="lang-select">
+        <option value="index.html" selected>English 🇬🇧</option>
+        <option value="index-tr.html">Türkçe 🇹🇷</option>
+        <option value="index-cn.html">中文 🇨🇳</option>
+      </select>
     </nav>
   </header>
 
@@ -252,13 +278,16 @@
     © 2025 Mehmet Akif Karaman - All rights reserved.
   </footer>
 
-  <!-- JavaScript for Theme Toggle -->
+  <!-- JavaScript for Theme & Language -->
   <script>
     function toggleTheme() {
       document.body.classList.toggle('light-mode');
+    }
+
+    function changeLanguage(page) {
+      window.location.href = page;
     }
   </script>
 
 </body>
 </html>
-
