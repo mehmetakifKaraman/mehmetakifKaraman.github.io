@@ -11,6 +11,7 @@
       background-color: #000;
       color: white;
       margin: 0;
+      transition: background-color 0.3s, color 0.3s;
     }
 
     header {
@@ -34,6 +35,20 @@
 
     .back-button:hover {
       background-color: #444;
+    }
+
+    .theme-toggle {
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .theme-toggle:hover {
+      background-color: #555;
     }
 
     h1 {
@@ -90,13 +105,46 @@
       font-size: 0.9em;
       color: #555;
     }
+
+    /* Light Mode */
+    .light-mode {
+      background-color: #fff;
+      color: #000;
+    }
+
+    .light-mode header {
+      background-color: #eee;
+    }
+
+    .light-mode .back-button,
+    .light-mode .theme-toggle {
+      background-color: #ccc;
+      color: #000;
+    }
+
+    .light-mode .project-card {
+      background-color: #f4f4f4;
+      color: #000;
+    }
+
+    .light-mode .project-card p {
+      color: #333;
+    }
+
+    .light-mode h1 {
+      color: #007acc;
+    }
+
+    .light-mode footer {
+      color: #444;
+    }
   </style>
 </head>
 <body>
 
   <header>
     <a href="index.html" class="back-button">← Back to Home</a>
-    <div><strong>Arduino Projects</strong></div>
+    <button class="theme-toggle" onclick="toggleTheme()">🌗</button>
   </header>
 
   <h1>Explore Projects</h1>
@@ -144,6 +192,12 @@
         list.appendChild(card);
       });
     });
+  </script>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle("light-mode");
+    }
   </script>
 
 </body>
