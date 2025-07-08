@@ -2,83 +2,90 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Projeni Ekle</title>
-  <link rel="icon" href="https://w7.pngwing.com/pngs/92/275/png-transparent-computer-icons-computer-programming-web-development-content-management-system-coding-miscellaneous-angle-text.png" type="image/png" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit Your Project</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
   <style>
     body {
-      background-color: #111;
-      color: white;
       font-family: 'Inter', sans-serif;
+      background-color: #000;
+      color: white;
+      margin: 0;
       padding: 20px;
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 30px;
+      color: #4fc3f7;
     }
 
     form {
       max-width: 600px;
-      margin: auto;
-      background: #222;
+      margin: 0 auto;
+      background-color: #111;
       padding: 20px;
-      border-radius: 12px;
+      border-radius: 10px;
     }
 
     input, textarea {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       margin: 10px 0;
       border-radius: 8px;
-      border: 1px solid #555;
-      background-color: #000;
+      border: none;
+      background-color: #222;
       color: white;
     }
 
     button {
-      padding: 12px 24px;
-      background-color: green;
-      color: white;
+      padding: 10px 20px;
+      background-color: #4fc3f7;
       border: none;
-      border-radius: 8px;
-      cursor: pointer;
+      border-radius: 20px;
+      color: black;
       font-weight: bold;
+      cursor: pointer;
     }
 
-    button:hover {
-      background-color: darkgreen;
+    .project-list {
+      max-width: 800px;
+      margin: 40px auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
     }
 
-    footer {
-      text-align: center;
-      margin-top: 50px;
-      color: #666;
-      font-size: 0.9em;
+    .project-card {
+      background-color: #1a1a1a;
+      border-radius: 10px;
+      padding: 15px;
+      color: white;
+    }
+
+    .project-card img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
 
-  <h1>Projeni Ekle</h1>
+  <h1>Submit Your Arduino Project</h1>
 
   <form id="projectForm">
-    <input type="text" name="name" placeholder="Adınız" required />
-    <input type="text" name="projectName" placeholder="Proje Adı" required />
-    <textarea name="description" placeholder="Projenin açıklaması" rows="4" required></textarea>
-    <input type="url" name="link" placeholder="Proje bağlantısı (GitHub, site vs)" required />
-    <button type="submit">Gönder</button>
+    <input type="text" id="title" placeholder="Project Title" required />
+    <textarea id="description" placeholder="Project Description" required></textarea>
+    <input type="url" id="image" placeholder="Image URL (optional)" />
+    <input type="url" id="link" placeholder="Project Link (optional)" />
+    <button type="submit">Submit</button>
   </form>
 
-  <footer>
-    © 2025 Mehmet Akif Karaman – Tüm hakları saklıdır.
-  </footer>
+  <div class="project-list" id="projectList"></div>
 
-  <!-- Firebase -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyARCnqlYtrOYhoJMqcYFcws18hqeYdxOHg",
@@ -91,28 +98,42 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
+    const db = getDatabase(app);
+    const projectRef = ref(db, "projects");
 
-    const form = document.getElementById('projectForm');
-    form.addEventListener('submit', function(e) {
+    const form = document.getElementById("projectForm");
+    const list = document.getElementById("projectList");
+
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      const name = form.name.value;
-      const projectName = form.projectName.value;
-      const description = form.description.value;
-      const link = form.link.value;
+      const data = {
+        title: form.title.value,
+        description: form.description.value,
+        image: form.image.value,
+        link: form.link.value,
+        secureKey: "akif123" // 🔐 Firebase güvenlik anahtarı
+      };
 
-      const newProjectRef = ref(database, 'projects/');
-      push(newProjectRef, {
-        name,
-        projectName,
-        description,
-        link,
-        timestamp: Date.now()
-      });
-
-      alert('Projen Firebase\'e başarıyla gönderildi!');
+      push(projectRef, data);
       form.reset();
+      alert("✅ Proje gönderildi!");
+    });
+
+    onValue(projectRef, (snapshot) => {
+      list.innerHTML = "";
+      snapshot.forEach((child) => {
+        const proj = child.val();
+        const card = document.createElement("div");
+        card.className = "project-card";
+        card.innerHTML = `
+          ${proj.image ? `<img src="${proj.image}" alt="">` : ""}
+          <h3>${proj.title}</h3>
+          <p>${proj.description}</p>
+          ${proj.link ? `<a href="${proj.link}" target="_blank" style="color:#4fc3f7;">View Project</a>` : ""}
+        `;
+        list.appendChild(card);
+      });
     });
   </script>
 
