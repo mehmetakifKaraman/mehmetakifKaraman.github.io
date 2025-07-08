@@ -4,11 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mehmet Akif Karaman</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
-  
-  <!-- ✅ Favicon -->
   <link rel="icon" href="https://w7.pngwing.com/pngs/92/275/png-transparent-computer-icons-computer-programming-web-development-content-management-system-coding-miscellaneous-angle-text.png" type="image/png" />
-
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
@@ -19,41 +16,25 @@
 
     header {
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
       align-items: center;
-      padding: 20px;
+      padding: 20px 40px;
       font-weight: bold;
-    }
-
-    @media (min-width: 600px) {
-      header {
-        flex-direction: row;
-        justify-content: space-between;
-        padding: 20px 40px;
-      }
-    }
-
-    nav {
-      margin-top: 10px;
-      display: flex;
       flex-wrap: wrap;
-      align-items: center;
-    }
-
-    @media (min-width: 600px) {
-      nav {
-        margin-top: 0;
-      }
     }
 
     nav a {
       margin-left: 20px;
       text-decoration: none;
       color: white;
+      background-color: #333;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: bold;
     }
 
     nav a:hover {
-      text-decoration: underline;
+      background-color: #444;
     }
 
     .theme-toggle {
@@ -61,7 +42,7 @@
       background-color: #333;
       color: white;
       border: none;
-      padding: 8px 16px;
+      padding: 6px 12px;
       border-radius: 20px;
       font-weight: bold;
       margin-left: 20px;
@@ -71,29 +52,12 @@
       background-color: #555;
     }
 
-    .lang-select {
-      margin-left: 20px;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-weight: bold;
-      background-color: #333;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    .light-mode .lang-select {
-      background-color: #ddd;
-      color: black;
-    }
-
     .hero {
       position: relative;
       min-height: 70vh;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       text-align: center;
       font-size: 2em;
       font-weight: bold;
@@ -119,7 +83,7 @@
     }
 
     section {
-      padding: 60px 20px;
+      padding: 60px 40px;
       background-color: #111;
     }
 
@@ -173,7 +137,6 @@
       color: #555;
     }
 
-    /* Light Mode */
     .light-mode {
       background-color: #fff;
       color: #000;
@@ -186,14 +149,6 @@
 
     .light-mode nav a {
       color: #000;
-    }
-
-    .light-mode .theme-toggle {
-      background-color: #ddd;
-      color: black;
-    }
-
-    .light-mode .theme-toggle:hover {
       background-color: #ccc;
     }
 
@@ -211,6 +166,11 @@
       color: #000;
       border: 1px solid #000;
     }
+
+    .light-mode .theme-toggle {
+      background-color: #ddd;
+      color: #000;
+    }
   </style>
 </head>
 <body>
@@ -222,22 +182,13 @@
       <a href="#contact">Contact</a>
       <a href="arduino.html">Arduino Tutorials</a>
       <button class="theme-toggle" onclick="toggleTheme()">🌗</button>
-
-      <!-- 🌐 Language Selector -->
-      <select onchange="changeLanguage(this.value)" class="lang-select">
-        <option value="index.html" selected>English 🇬🇧</option>
-        <option value="index-tr.html">Türkçe 🇹🇷</option>
-        <option value="index-cn.html">中文 🇨🇳</option>
-      </select>
     </nav>
   </header>
 
-  <!-- HERO -->
   <div class="hero">
     &lt;WELCOME TO MY SITE WHERE I WILL SHARE MY SOFTWARE PROJECTS AND OTHER IDEAS WITH YOU.&gt;
   </div>
 
-  <!-- ABOUT -->
   <section id="about">
     <div class="flex-container">
       <div class="half">
@@ -250,7 +201,6 @@
     </div>
   </section>
 
-  <!-- CONTACT -->
   <section id="contact">
     <div class="flex-container">
       <div class="half">
@@ -278,14 +228,9 @@
     © 2025 Mehmet Akif Karaman - All rights reserved.
   </footer>
 
-  <!-- JavaScript for Theme & Language -->
   <script>
     function toggleTheme() {
       document.body.classList.toggle('light-mode');
-    }
-
-    function changeLanguage(page) {
-      window.location.href = page;
     }
   </script>
 
