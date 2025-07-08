@@ -31,12 +31,30 @@
     .hero {
       height: 80vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
       font-size: 2em;
       font-weight: bold;
       padding: 20px;
+    }
+
+    .arduino-button {
+      margin-top: 30px;
+      padding: 10px 30px;
+      font-size: 1rem;
+      font-weight: bold;
+      background-color: #0f0;
+      color: black;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .arduino-button:hover {
+      background-color: #0c0;
     }
 
     section {
@@ -95,6 +113,11 @@
   <!-- ANASAYFA -->
   <div class="hero">
     &lt;WELCOME TO MY SITE WHERE I WILL SHARE MY SOFTWARE PROJECTS AND OTHER IDEAS WITH YOU.&gt;
+
+    <!-- Arduino Eğitimleri Butonu -->
+    <a href="arduino.html">
+      <button class="arduino-button">Arduino Eğitimleri</button>
+    </a>
   </div>
 
   <!-- ABOUT -->
