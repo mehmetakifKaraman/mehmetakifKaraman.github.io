@@ -6,295 +6,286 @@
 <title>ARAI - Arduino Assistant</title>
 <style>
   body {
-    background-color: #000;
+    background: #121212;
     color: #eee;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 20px;
   }
-  #chat {
+  #app {
     max-width: 600px;
-    margin: auto;
-    border: 1px solid #555;
-    padding: 15px;
-    border-radius: 8px;
-    background-color: #111;
+    margin: 0 auto;
   }
-  .message {
-    margin-bottom: 15px;
+  #output {
     white-space: pre-wrap;
+    min-height: 300px;
     font-family: monospace;
+    margin-bottom: 20px;
+    background: #222;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #000;
   }
-  .bot {
-    color: #6cf;
+  #choices button {
+    margin: 5px;
+    padding: 10px 16px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    background: #333;
+    color: #eee;
+    font-weight: 600;
+    transition: background 0.3s ease;
   }
-  .user {
-    color: #fc6;
-    text-align: right;
+  #choices button:hover {
+    background: #555;
   }
-  button.option-btn {
+  #backBtn {
+    display: none;
+    margin-top: 15px;
+    padding: 10px 20px;
+    border-radius: 20px;
     background-color: #333;
     color: white;
     border: none;
-    border-radius: 20px;
-    padding: 6px 12px;
-    margin: 4px;
     cursor: pointer;
+  }
+  #backBtn:hover {
+    background-color: #555;
+  }
+
+  /* Sağ üst köşede My Site butonu */
+  #mySiteBtn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    cursor: pointer;
+    user-select: none;
+    z-index: 1000;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  #mySiteBtn:hover {
+    background-color: rgba(0,0,0,0.85);
+  }
+
+  /* RGB dönen renk animasyonu */
+  @keyframes rgbShift {
+    0% { color: red; }
+    33% { color: green; }
+    66% { color: blue; }
+    100% { color: red; }
+  }
+  .rgb-animated {
+    animation: rgbShift 3s linear infinite;
     font-weight: bold;
   }
-  button.option-btn:hover {
-    background-color: #555;
+
+  /* Link stil ayarı */
+  a.no-underline {
+    color: inherit;
+    text-decoration: none;
+  }
+  a.no-underline:hover {
+    text-decoration: underline;
   }
 </style>
 </head>
 <body>
 
-<div id="chat"></div>
+<!-- Sağ üst köşedeki kendi sitene giden buton -->
+<a id="mySiteBtn" href="https://mehmetakifkaraman.github.io/" target="_blank" rel="noopener noreferrer">
+  Ana Menü
+</a>
+
+<div id="app">
+  <div id="output"></div>
+  <div id="choices"></div>
+  <button id="backBtn">🔙 Back to Main Menu</button>
+</div>
 
 <script>
-  const chat = document.getElementById('chat');
+  const output = document.getElementById('output');
+  const choices = document.getElementById('choices');
+  const backBtn = document.getElementById('backBtn');
 
-  // Yavaş yazma fonksiyonu (harf harf yazıyor)
-  async function slowPrint(text, className = 'bot') {
-    const messageElem = document.createElement('div');
-    messageElem.className = 'message ' + className;
-    chat.appendChild(messageElem);
-
-    for (let i = 0; i < text.length; i++) {
-      messageElem.textContent += text[i];
-      await new Promise(r => setTimeout(r, 30));
+  // HTML destekleyen yavaş yazdırma fonksiyonu
+  async function slowPrintHTML(html) {
+    output.innerHTML = '';  // Önce temizle
+    return new Promise(resolve => {
+      output.innerHTML = html;
       window.scrollTo(0, document.body.scrollHeight);
-    }
-    return messageElem;
-  }
-
-  // Kullanıcı cevabını göster
-  function showUserMessage(text) {
-    const userMsg = document.createElement('div');
-    userMsg.className = 'message user';
-    userMsg.textContent = text;
-    chat.appendChild(userMsg);
-    window.scrollTo(0, document.body.scrollHeight);
-  }
-
-  // Seçenek butonları oluştur
-  function createOptions(options) {
-    const container = document.createElement('div');
-    options.forEach(opt => {
-      const btn = document.createElement('button');
-      btn.textContent = opt.label;
-      btn.className = 'option-btn';
-      btn.onclick = () => {
-        container.remove();
-        handleUserInput(opt.value);
-      };
-      container.appendChild(btn);
-    });
-    chat.appendChild(container);
-    window.scrollTo(0, document.body.scrollHeight);
-  }
-
-  // Ana menüye dönme fonksiyonu
-  function backToMainMenu() {
-    state.step = 0;
-    state.project = null;
-    slowPrint("Returning to main menu...\n").then(() => {
-      askIdeStatus();
+      setTimeout(resolve, 100); // Hemen değil biraz bekle
     });
   }
 
-  // Adım adım ilerleyen diyalog mantığı
-  async function handleUserInput(input) {
-    showUserMessage(input);
-
-    switch (state.step) {
-      case 0:
-        if (input === 'installed') {
-          await slowPrint("Great! Let's continue. 🎉");
-          state.step++;
-          askProjectChoice();
-        } else if (input === 'not_installed') {
-          await slowPrint("No worries! You can download Arduino IDE here: https://www.arduino.cc/en/software 😊\nPlease install it and come back!");
-          // Burada artık sonlandırıyoruz, geri dönmek istersen:
-          createOptions([
-            {label: "Back to Main Menu", value: "back"}
-          ]);
-        } else if(input === 'back') {
-          backToMainMenu();
-        }
-        break;
-
-      case 1:
-        if (['1','2','3'].includes(input)) {
-          state.project = input;
-          showProjectDetails(input);
-        } else if(input === 'back') {
-          backToMainMenu();
-        } else {
-          await slowPrint("Please select a valid option.");
-          askProjectChoice();
-        }
-        break;
-
-      case 2:
-        if(input === 'back') {
-          backToMainMenu();
-        } else {
-          await slowPrint("Your project is ready! You can try another one if you want. 😊");
-          // Projeyi bitirdik, şimdi kullanıcıya "Başka yardımcı olabilir miyim?" diye sor
-          await slowPrint("\nIs there anything else I can help you with? You can return to main menu or choose another project.");
-          createOptions([
-            {label: "Back to Main Menu", value: "back"},
-            {label: "Choose Another Project", value: "repeat_projects"}
-          ]);
-          state.step = 3; // ekstra adım ekledik
-        }
-        break;
-
-      case 3:
-        if(input === 'back') {
-          backToMainMenu();
-        } else if(input === 'repeat_projects') {
-          state.step = 1;
-          askProjectChoice();
-        } else {
-          await slowPrint("Please select a valid option.");
-          createOptions([
-            {label: "Back to Main Menu", value: "back"},
-            {label: "Choose Another Project", value: "repeat_projects"}
-          ]);
-        }
-        break;
+  // Basit metin yavaş yazdırma (char by char)
+  async function slowPrint(text, delay = 30) {
+    output.textContent = '';
+    for (let i = 0; i < text.length; i++) {
+      output.textContent += text[i];
+      window.scrollTo(0, document.body.scrollHeight);
+      await new Promise(r => setTimeout(r, delay));
     }
   }
 
-  function askIdeStatus() {
-    slowPrint("Hello! I'm ARAI 🤖 Your Arduino project assistant.\n");
-    setTimeout(() => {
-      slowPrint("Is Arduino IDE installed on your computer?").then(() => {
-        createOptions([
-          {label: "Installed", value: "installed"},
-          {label: "Not Installed", value: "not_installed"}
-        ]);
-      });
-    }, 800);
+  // Ana menüyü göster
+  function showMainMenu() {
+    slowPrint("What would you like to do? Choose a number:\n1️⃣ Blink an LED\n2️⃣ Control LED with a button\n3️⃣ Measure temperature with DHT11");
+    choices.innerHTML = `
+      <button onclick="selectProject('1')">1️⃣ Blink an LED</button>
+      <button onclick="selectProject('2')">2️⃣ Control LED with a button</button>
+      <button onclick="selectProject('3')">3️⃣ Measure temperature with DHT11</button>
+    `;
+    backBtn.style.display = 'none';
   }
 
-  function askProjectChoice() {
-    slowPrint("What would you like to do? Choose a number:\n1️⃣ Blink an LED\n2️⃣ Control LED with a button\n3️⃣ Measure temperature with DHT11")
-    .then(() => {
-      createOptions([
-        {label: "1️⃣ Blink an LED", value: "1"},
-        {label: "2️⃣ Control LED with Button", value: "2"},
-        {label: "3️⃣ Measure Temp with DHT11", value: "3"},
-        {label: "Back to Main Menu", value: "back"}  // Buraya da ekledik
-      ]);
-    });
-  }
+  backBtn.addEventListener('click', () => {
+    showMainMenu();
+  });
 
-  async function showProjectDetails(choice) {
-    const details = {
-      "1": {
-        materials: "Materials needed:\n🔹 Arduino Uno or compatible board\n🔹 LED\n🔹 220Ω resistor\n🔹 Jumper wires\n🔹 Breadboard (optional)",
-        steps: "Circuit connection steps:\n1️⃣ Connect LED's long leg to Arduino pin 13 🔌\n2️⃣ Connect LED's short leg through 220Ω resistor to GND ⚡️",
-        code: [
-          "// LED Blink Example",
-          "int ledPin = 13;",
-          "",
-          "void setup() {",
-          "  pinMode(ledPin, OUTPUT);",
-          "}",
-          "",
-          "void loop() {",
-          "  digitalWrite(ledPin, HIGH); // Turn LED on",
-          "  delay(1000);",
-          "  digitalWrite(ledPin, LOW);  // Turn LED off",
-          "  delay(1000);",
-          "}"
-        ]
-      },
-      "2": {
-        materials: "Materials needed:\n🔹 Arduino Uno or compatible board\n🔹 LED\n🔹 220Ω resistor\n🔹 Button\n🔹 Jumper wires\n🔹 Breadboard (optional)",
-        steps: "Circuit connection steps:\n1️⃣ Connect one button leg to Arduino pin 2 🔘\n2️⃣ Connect the other button leg to GND\n3️⃣ Connect LED's long leg to Arduino pin 13 🔌\n4️⃣ Connect LED's short leg through 220Ω resistor to GND ⚡️",
-        code: [
-          "// Control LED with Button",
-          "int ledPin = 13;",
-          "int buttonPin = 2;",
-          "int buttonState = 0;",
-          "",
-          "void setup() {",
-          "  pinMode(ledPin, OUTPUT);",
-          "  pinMode(buttonPin, INPUT);",
-          "}",
-          "",
-          "void loop() {",
-          "  buttonState = digitalRead(buttonPin);",
-          "  if (buttonState == HIGH) {",
-          "    digitalWrite(ledPin, HIGH);",
-          "  } else {",
-          "    digitalWrite(ledPin, LOW);",
-          "  }",
-          "}"
-        ]
-      },
-      "3": {
-        materials: "Materials needed:\n🔹 Arduino Uno or compatible board\n🔹 DHT11 Temperature & Humidity sensor\n🔹 Jumper wires\n🔹 Breadboard (optional)",
-        steps: "Circuit connection steps:\n1️⃣ Connect DHT11 VCC to 5V 🔋\n2️⃣ Connect GND to GND\n3️⃣ Connect data pin to Arduino pin 2 📡",
-        code: [
-          "// Measure temperature with DHT11 (requires DHT library)",
-          "#include <DHT.h>",
-          "",
-          "#define DHTPIN 2",
-          "#define DHTTYPE DHT11",
-          "",
-          "DHT dht(DHTPIN, DHTTYPE);",
-          "",
-          "void setup() {",
-          "  Serial.begin(9600);",
-          "  dht.begin();",
-          "}",
-          "",
-          "void loop() {",
-          "  float h = dht.readHumidity();",
-          "  float t = dht.readTemperature();",
-          "",
-          "  if (isnan(h) || isnan(t)) {",
-          "    Serial.println(\"Failed to read from sensor!\");",
-          "    return;",
-          "  }",
-          "",
-          "  Serial.print(\"Humidity: \");",
-          "  Serial.print(h);",
-          "  Serial.print(\" %\\t\");",
-          "  Serial.print(\"Temperature: \");",
-          "  Serial.print(t);",
-          "  Serial.println(\" *C\");",
-          "  delay(2000);"
-        ]
+  // Seçilen projeye göre gösterim
+  async function selectProject(choice) {
+    backBtn.style.display = 'inline-block';
+
+    if(choice === '1') {
+      await slowPrint(
+`Materials needed:
+🔹 Arduino Uno or compatible board
+🔹 LED
+🔹 220Ω resistor
+🔹 Jumper wires
+🔹 Breadboard (optional)
+
+Circuit connection steps:
+1️⃣ Connect the LED's long leg to Arduino pin 13 🔌
+2️⃣ Connect the LED's short leg through a 220Ω resistor to GND ⚡️
+`);
+      await slowPrint("\nCode:\n");
+      const code = 
+`// LED Blink Example
+int ledPin = 13;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(ledPin, HIGH); // Turn LED on
+  delay(1000);
+  digitalWrite(ledPin, LOW);  // Turn LED off
+  delay(1000);
+}`;
+      for(let line of code.split('\n')) {
+        await slowPrint(line+'\n', 40);
       }
-    };
-
-    const p = details[choice];
-    if (!p) {
-      await slowPrint("Sorry, that option is not supported yet. 😔");
-      return;
     }
+    else if(choice === '2') {
+      await slowPrint(
+`Materials needed:
+🔹 Arduino Uno or compatible board
+🔹 LED
+🔹 220Ω resistor
+🔹 Button
+🔹 Jumper wires
+🔹 Breadboard (optional)
 
-    await slowPrint(p.materials);
-    await slowPrint(p.steps);
+Circuit connection steps:
+1️⃣ Connect one button leg to Arduino pin 2 🔘
+2️⃣ Connect the other button leg to GND
+3️⃣ Connect LED's long leg to Arduino pin 13 🔌
+4️⃣ Connect LED's short leg through 220Ω resistor to GND ⚡️
+`);
+      await slowPrint("\nCode:\n");
+      const code =
+`// Control LED with Button
+int ledPin = 13;
+int buttonPin = 2;
+int buttonState = 0;
 
-    for (const line of p.code) {
-      await slowPrint(line, 50);
+void setup() {
+  pinMode(ledPin, OUTPUT);
+  pinMode(buttonPin, INPUT);
+}
+
+void loop() {
+  buttonState = digitalRead(buttonPin);
+  if (buttonState == HIGH) {
+    digitalWrite(ledPin, HIGH);
+  } else {
+    digitalWrite(ledPin, LOW);
+  }
+}`;
+      for(let line of code.split('\n')) {
+        await slowPrint(line+'\n', 40);
+      }
     }
+    else if(choice === '3') {
+      await slowPrint(
+`Materials needed:
+🔹 Arduino Uno or compatible board
+🔹 DHT11 Temperature & Humidity sensor
+🔹 Jumper wires
+🔹 Breadboard (optional)
 
-    state.step = 2;
+Circuit connection steps:
+1️⃣ Connect DHT11 VCC to 5V 🔋
+2️⃣ Connect GND to GND
+3️⃣ Connect data pin to Arduino pin 2 📡
+`);
+      await slowPrint("\nCode:\n");
+      const code =
+`// Measure temperature with DHT11 (requires DHT library)
+#include <DHT.h>
+
+#define DHTPIN 2
+#define DHTTYPE DHT11
+
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() {
+  Serial.begin(9600);
+  dht.begin();
+}
+
+void loop() {
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+
+  if (isnan(h) || isnan(t)) {
+    Serial.println("Failed to read from sensor!");
+    return;
   }
 
-  // Durum objesi
-  const state = { step: 0, project: null };
+  Serial.print("Humidity: ");
+  Serial.print(h);
+  Serial.print(" %\t");
+  Serial.print("Temperature: ");
+  Serial.print(t);
+  Serial.println(" *C");
+  delay(2000);
+}`;
+      for(let line of code.split('\n')) {
+        await slowPrint(line+'\n', 40);
+      }
+    }
 
-  // Başlat
-  askIdeStatus();
+    // Arduino IDE link ve kapanış mesajı, RGB renkli ve tıklanabilir
+    await slowPrintHTML(
+      `<br>💻 Do you have Arduino IDE installed? (yes/no)<br>` +
+      `👉 If not, download it here: ` +
+      `<a href="https://www.arduino.cc/en/software" target="_blank" class="rgb-animated no-underline">https://www.arduino.cc/en/software</a><br><br>` +
+      `Anything else you want help with? 😊`
+    );
+  }
 
+  // Sayfa yüklendiğinde ana menüyü göster
+  window.onload = showMainMenu;
 </script>
 
 </body>
