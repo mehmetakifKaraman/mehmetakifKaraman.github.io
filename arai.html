@@ -190,87 +190,109 @@
     });
   }
 
-  async function showProjectDetails(choice) {
-    const details = {
-      "1": {
-        materials: "Materials needed:\n🔹 Arduino Uno or compatible board\n🔹 LED\n🔹 220Ω resistor\n🔹 Jumper wires\n🔹 Breadboard (optional)",
-        steps: "Circuit connection steps:\n1️⃣ Connect LED's long leg to Arduino pin 13 🔌\n2️⃣ Connect LED's short leg through 220Ω resistor to GND ⚡️",
-        code: [
-          "// LED Blink Example",
-          "int ledPin = 13;",
-          "",
-          "void setup() {",
-          "  pinMode(ledPin, OUTPUT);",
-          "}",
-          "",
-          "void loop() {",
-          "  digitalWrite(ledPin, HIGH); // Turn LED on",
-          "  delay(1000);",
-          "  digitalWrite(ledPin, LOW);  // Turn LED off",
-          "  delay(1000);",
-          "}"
-        ]
-      },
-      "2": {
-        materials: "Materials needed:\n🔹 Arduino Uno or compatible board\n🔹 LED\n🔹 220Ω resistor\n🔹 Button\n🔹 Jumper wires\n🔹 Breadboard (optional)",
-        steps: "Circuit connection steps:\n1️⃣ Connect one button leg to Arduino pin 2 🔘\n2️⃣ Connect the other button leg to GND\n3️⃣ Connect LED's long leg to Arduino pin 13 🔌\n4️⃣ Connect LED's short leg through 220Ω resistor to GND ⚡️",
-        code: [
-          "// Control LED with Button",
-          "int ledPin = 13;",
-          "int buttonPin = 2;",
-          "int buttonState = 0;",
-          "",
-          "void setup() {",
-          "  pinMode(ledPin, OUTPUT);",
-          "  pinMode(buttonPin, INPUT);",
-          "}",
-          "",
-          "void loop() {",
-          "  buttonState = digitalRead(buttonPin);",
-          "  if (buttonState == HIGH) {",
-          "    digitalWrite(ledPin, HIGH);",
-          "  } else {",
-          "    digitalWrite(ledPin, LOW);",
-          "  }",
-          "}"
-        ]
-      },
-      "3": {
-        materials: "Materials needed:\n🔹 Arduino Uno or compatible board\n🔹 DHT11 Temperature & Humidity sensor\n🔹 Jumper wires\n🔹 Breadboard (optional)",
-        steps: "Circuit connection steps:\n1️⃣ Connect DHT11 VCC to 5V 🔋\n2️⃣ Connect GND to GND\n3️⃣ Connect data pin to Arduino pin 2 📡",
-        code: [
-          "// Measure temperature with DHT11 (requires DHT library)",
-          "#include <DHT.h>",
-          "",
-          "#define DHTPIN 2",
-          "#define DHTTYPE DHT11",
-          "",
-          "DHT dht(DHTPIN, DHTTYPE);",
-          "",
-          "void setup() {",
-          "  Serial.begin(9600);",
-          "  dht.begin();",
-          "}",
-          "",
-          "void loop() {",
-          "  float h = dht.readHumidity();",
-          "  float t = dht.readTemperature();",
-          "",
-          "  if (isnan(h) || isnan(t)) {",
-          "    Serial.println(\"Failed to read from sensor!\");",
-          "    return;",
-          "  }",
-          "",
-          "  Serial.print(\"Humidity: \");",
-          "  Serial.print(h);",
-          "  Serial.print(\" %\\t\");",
-          "  Serial.print(\"Temperature: \");",
-          "  Serial.print(t);",
-          "  Serial.println(\" *C\");",
-          "  delay(2000);"
-        ]
-      }
-    };
+async function showProjectDetails(choice) {
+  const details = {
+    "1": {
+      materials: "Materials needed:\n🔹 Arduino Uno or compatible board\n🔹 LED\n🔹 220Ω resistor\n🔹 Jumper wires\n🔹 Breadboard (optional)",
+      steps: "Circuit connection steps:\n1️⃣ Connect LED's long leg to Arduino pin 13 🔌\n2️⃣ Connect LED's short leg through 220Ω resistor to GND ⚡️",
+      code: [
+        "// LED Blink Example",
+        "int ledPin = 13;",
+        "",
+        "void setup() {",
+        "  pinMode(ledPin, OUTPUT);",
+        "}",
+        "",
+        "void loop() {",
+        "  digitalWrite(ledPin, HIGH); // Turn LED on",
+        "  delay(1000);",
+        "  digitalWrite(ledPin, LOW);  // Turn LED off",
+        "  delay(1000);",
+        "}"
+      ]
+    },
+    "2": {
+      materials: "Materials needed:\n🔹 Arduino Uno or compatible board\n🔹 LED\n🔹 220Ω resistor\n🔹 Button\n🔹 Jumper wires\n🔹 Breadboard (optional)",
+      steps: "Circuit connection steps:\n1️⃣ Connect one button leg to Arduino pin 2 🔘\n2️⃣ Connect the other button leg to GND\n3️⃣ Connect LED's long leg to Arduino pin 13 🔌\n4️⃣ Connect LED's short leg through 220Ω resistor to GND ⚡️",
+      code: [
+        "// Control LED with Button",
+        "int ledPin = 13;",
+        "int buttonPin = 2;",
+        "int buttonState = 0;",
+        "",
+        "void setup() {",
+        "  pinMode(ledPin, OUTPUT);",
+        "  pinMode(buttonPin, INPUT);",
+        "}",
+        "",
+        "void loop() {",
+        "  buttonState = digitalRead(buttonPin);",
+        "  if (buttonState == HIGH) {",
+        "    digitalWrite(ledPin, HIGH);",
+        "  } else {",
+        "    digitalWrite(ledPin, LOW);",
+        "  }",
+        "}"
+      ]
+    },
+    "3": {
+      materials: "Materials needed:\n🔹 Arduino Uno or compatible board\n🔹 DHT11 Temperature & Humidity sensor\n🔹 Jumper wires\n🔹 Breadboard (optional)",
+      steps: "Circuit connection steps:\n1️⃣ Connect DHT11 VCC to 5V 🔋\n2️⃣ Connect GND to GND\n3️⃣ Connect data pin to Arduino pin 2 📡",
+      code: [
+        "// Measure temperature with DHT11 (requires DHT library)",
+        "#include <DHT.h>",
+        "",
+        "#define DHTPIN 2",
+        "#define DHTTYPE DHT11",
+        "",
+        "DHT dht(DHTPIN, DHTTYPE);",
+        "",
+        "void setup() {",
+        "  Serial.begin(9600);",
+        "  dht.begin();",
+        "}",
+        "",
+        "void loop() {",
+        "  float h = dht.readHumidity();",
+        "  float t = dht.readTemperature();",
+        "",
+        "  if (isnan(h) || isnan(t)) {",
+        "    Serial.println(\"Failed to read from sensor!\");",
+        "    return;",
+        "  }",
+        "",
+        "  Serial.print(\"Humidity: \");",
+        "  Serial.print(h);",
+        "  Serial.print(\" %\\t\");",
+        "  Serial.print(\"Temperature: \");",
+        "  Serial.print(t);",
+        "  Serial.println(\" *C\");",
+        "  delay(2000);",
+        "}"
+      ]
+    }
+  };
+
+  const p = details[choice];
+  if (!p) {
+    await slowPrint("Sorry, that option is not supported yet. 😔");
+    return;
+  }
+
+  await slowPrint(p.materials);
+  await slowPrint(p.steps);
+  await slowPrint("Here's your Arduino code:");
+
+  for (const line of p.code) {
+    await slowPrint(line, 50);
+  }
+
+  await slowPrint("Do you want more project ideas or need help with something else?");
+
+  // Restart project selection
+  state.step = 1;
+  askProjectChoice();
+}
 
     const p = details[choice];
     if (!p) {
