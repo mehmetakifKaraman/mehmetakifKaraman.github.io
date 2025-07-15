@@ -1,122 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ARAI - Arduino Assistant</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #000;
-      color: #eee;
-      font-family: 'Inter', sans-serif;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ARAI - Arduino Assistant</title>
+<style>
+  :root {
+    --bg-color-dark: #000000;
+    --text-color-dark: #eee;
+    --bg-color-light: #f5f5f5;
+    --text-color-light: #111;
+  }
 
-    .ambience-line {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 5px;
-      background: linear-gradient(270deg, red, orange, yellow, green, cyan, blue, violet);
-      background-size: 1000% 100%;
-      animation: rgbFlow 30s linear infinite;
-      z-index: 0;
-    }
+  body {
+    font-family: 'Inter', sans-serif;
+    margin: 20px;
+    background-color: var(--bg-color-dark);
+    color: var(--text-color-dark);
+    transition: background-color 0.5s, color 0.5s;
+  }
 
-    @keyframes rgbFlow {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 100% 50%; }
-    }
+  #chat {
+    max-width: 600px;
+    margin: auto;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.85);
+    padding: 15px;
+    position: relative;
+    box-sizing: border-box;
+  }
 
-    #chat {
-      max-width: 600px;
-      margin: 80px auto;
-      border: 1px solid #555;
-      padding: 15px;
-      border-radius: 8px;
-      background-color: #111;
-      position: relative;
-      z-index: 1;
-    }
+  /* RGB ambient thin line behind chat */
+  #chat::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;  /* thin line */
+    border-radius: 8px 8px 0 0;
+    background: linear-gradient(270deg, #ff0000, #00ff00, #0000ff);
+    background-size: 600% 600%;
+    animation: rgbLine 60s ease infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
 
-    .message {
-      margin-bottom: 15px;
-      white-space: pre-wrap;
-      font-family: monospace;
-    }
+  @keyframes rgbLine {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+  }
 
-    .bot {
-      color: #6cf;
-    }
+  .message {
+    margin-bottom: 15px;
+    white-space: pre-wrap;
+    font-family: monospace;
+    position: relative;
+    z-index: 2;
+  }
+  .bot { color: #6cf; }
+  .user { color: #fc6; text-align: right; }
 
-    .user {
-      color: #fc6;
-      text-align: right;
-    }
+  button.option-btn {
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 12px;
+    margin: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  button.option-btn:hover {
+    background-color: #555;
+  }
 
-    button.option-btn {
-      background-color: #333;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      padding: 6px 12px;
-      margin: 4px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+  #menu {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 10000;
+  }
+  .menu-btn {
+    padding: 8px 12px;
+    background: #222;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 6px;
+    transition: background-color 0.3s;
+  }
+  .menu-btn:hover {
+    background-color: #444;
+  }
 
-    button.option-btn:hover {
-      background-color: #555;
-    }
-
-    .top-menu {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 2;
-    }
-
-    .top-menu a {
-      color: #fff;
-      text-decoration: none;
-      background: #444;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-weight: bold;
-    }
-
-    .top-menu a:hover {
-      background: #666;
-    }
-  </style>
+  .rainbow-link {
+    animation: rainbow 2s infinite;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: underline;
+  }
+  @keyframes rainbow {
+    0% {color: red;}
+    25% {color: yellow;}
+    50% {color: lime;}
+    75% {color: cyan;}
+    100% {color: magenta;}
+  }
+</style>
 </head>
 <body>
 
-<div class="ambience-line"></div>
-
-<div class="top-menu">
-  <a href="https://mehmetakifkaraman.github.io/" target="_blank">Main Menu</a>
+<div id="menu">
+  <button class="menu-btn" onclick="location.href='https://mehmetakifkaraman.github.io/'">Main Menu</button>
+  <button class="menu-btn" onclick="toggleTheme()">Toggle Theme</button>
 </div>
 
 <div id="chat"></div>
 
 <script>
   const chat = document.getElementById('chat');
-  const state = { step: 0, project: null };
+  const state = { step: 0, project: null, theme: 'dark' };
 
-  async function slowPrint(text, className = 'bot') {
+  const projectNames = {
+    "1": "1️⃣ Blink an LED",
+    "2": "2️⃣ Button LED Control",
+    "3": "3️⃣ DHT11 Temp Sensor",
+    "4": "4️⃣ Servo Motor",
+    "5": "5️⃣ LCD Display"
+  };
+
+  function toggleTheme() {
+    const root = document.documentElement;
+    if (state.theme === 'dark') {
+      state.theme = 'light';
+      root.style.setProperty('--bg-color-dark', 'var(--bg-color-light)');
+      root.style.setProperty('--text-color-dark', 'var(--text-color-light)');
+      document.body.style.backgroundColor = getComputedStyle(root).getPropertyValue('--bg-color-light').trim();
+      document.body.style.color = getComputedStyle(root).getPropertyValue('--text-color-light').trim();
+      document.getElementById('chat').style.backgroundColor = 'rgba(245, 245, 245, 0.85)';
+    } else {
+      state.theme = 'dark';
+      root.style.setProperty('--bg-color-dark', '#000000');
+      root.style.setProperty('--text-color-dark', '#eee');
+      document.body.style.backgroundColor = '#000000';
+      document.body.style.color = '#eee';
+      document.getElementById('chat').style.backgroundColor = 'rgba(0, 0, 0, 0.85)';
+    }
+  }
+
+  async function slowPrint(text, speed = 30, className = 'bot') {
     const messageElem = document.createElement('div');
     messageElem.className = 'message ' + className;
     chat.appendChild(messageElem);
-
     for (let i = 0; i < text.length; i++) {
       messageElem.textContent += text[i];
-      await new Promise(r => setTimeout(r, 30));
+      await new Promise(r => setTimeout(r, speed));
       window.scrollTo(0, document.body.scrollHeight);
     }
-
     return messageElem;
   }
 
@@ -130,6 +173,7 @@
 
   function createOptions(options) {
     const container = document.createElement('div');
+    container.style.marginBottom = '15px';
     options.forEach(opt => {
       const btn = document.createElement('button');
       btn.textContent = opt.label;
@@ -145,7 +189,12 @@
   }
 
   async function handleUserInput(input) {
-    showUserMessage(input);
+    // For step 1 (project choice), show full label not just number
+    if (state.step === 1 && projectNames[input]) {
+      showUserMessage(projectNames[input]);
+    } else {
+      showUserMessage(input);
+    }
 
     switch (state.step) {
       case 0:
@@ -154,16 +203,34 @@
           state.step++;
           askProjectChoice();
         } else if (input === 'not_installed') {
-          await slowPrint("You can download Arduino IDE here:\nhttps://www.arduino.cc/en/software 😊");
-          await new Promise(r => setTimeout(r, 800));
-          createOptions([{ label: "I installed it", value: "installed" }]);
+          await slowPrint("No worries! You can download the Arduino IDE here:");
+          const link = document.createElement('a');
+          link.href = "https://www.arduino.cc/en/software";
+          link.textContent = "https://www.arduino.cc/en/software";
+          link.className = "rainbow-link";
+          link.target = "_blank";
+          chat.appendChild(link);
+
+          const button = document.createElement('button');
+          button.textContent = "I have installed it";
+          button.className = "option-btn";
+          button.onclick = async () => {
+            button.remove();
+            link.remove();
+            showUserMessage("I have installed it");
+            await slowPrint("Great! Let's continue. 🎉");
+            state.step++;
+            askProjectChoice();
+          };
+          chat.appendChild(button);
+          window.scrollTo(0, document.body.scrollHeight);
         }
         break;
 
       case 1:
-        if (['1', '2', '3', '4', '5'].includes(input)) {
+        if (['1','2','3','4','5'].includes(input)) {
           state.project = input;
-          showProjectDetails(input);
+          await showProjectDetails(input);
         } else {
           await slowPrint("Please select a valid option.");
           askProjectChoice();
@@ -171,123 +238,145 @@
         break;
 
       case 2:
-        await slowPrint("Would you like to try another project?");
-        state.step = 1;
-        askProjectChoice();
+        await slowPrint("💡 Would you like to try another project?");
+        createOptions([
+          {label: "Yes", value: "restart"},
+          {label: "No", value: "end"}
+        ]);
+        state.step = 3;
+        break;
+
+      case 3:
+        if (input === "restart") {
+          state.step = 1;
+          askProjectChoice();
+        } else {
+          await slowPrint("Thanks for using ARAI! 🤖");
+          await slowPrint("Do you want help with anything else?");
+        }
         break;
     }
   }
 
   function askIdeStatus() {
     slowPrint("Hello! I'm ARAI 🤖 Your Arduino project assistant.\n")
-      .then(() => {
-        return slowPrint("Is Arduino IDE installed on your computer?");
-      })
-      .then(() => {
+    .then(() => {
+      slowPrint("Is Arduino IDE installed on your computer?").then(() => {
         createOptions([
-          { label: "Installed", value: "installed" },
-          { label: "Not Installed", value: "not_installed" }
+          {label: "Installed", value: "installed"},
+          {label: "Not Installed", value: "not_installed"}
         ]);
       });
+    });
   }
 
   function askProjectChoice() {
-    slowPrint("What would you like to do? Choose a number:\n1️⃣ Blink an LED\n2️⃣ Control LED with a button\n3️⃣ Measure temperature with DHT11\n4️⃣ Control a Servo Motor\n5️⃣ Display on LCD")
-      .then(() => {
-        createOptions([
-          { label: "1️⃣ Blink an LED", value: "1" },
-          { label: "2️⃣ Control LED with Button", value: "2" },
-          { label: "3️⃣ Measure Temp with DHT11", value: "3" },
-          { label: "4️⃣ Control Servo Motor", value: "4" },
-          { label: "5️⃣ Use LCD Display", value: "5" }
-        ]);
-      });
+    slowPrint("What would you like to do? Choose a number:\n1️⃣ Blink an LED\n2️⃣ Control LED with a button\n3️⃣ Measure temperature with DHT11\n4️⃣ Servo motor control\n5️⃣ Display on LCD")
+    .then(() => {
+      createOptions([
+        {label: "1️⃣ Blink an LED", value: "1"},
+        {label: "2️⃣ Button LED Control", value: "2"},
+        {label: "3️⃣ DHT11 Temp Sensor", value: "3"},
+        {label: "4️⃣ Servo Motor", value: "4"},
+        {label: "5️⃣ LCD Display", value: "5"},
+      ]);
+    });
   }
 
   async function showProjectDetails(choice) {
     const details = {
       "1": {
-        materials: "Required components:\n🔹 Arduino Uno\n🔹 LED\n🔹 220Ω resistor\n🔹 Jumper wires\n🔹 Breadboard (optional)",
-        steps: "Circuit:\n1️⃣ Connect LED long leg to pin 13\n2️⃣ Connect short leg through resistor to GND",
+        materials: "Materials needed:\n🔹 Arduino Uno\n🔹 LED\n🔹 220Ω resistor\n🔹 Jumper wires",
+        steps: "Steps:\n1️⃣ Connect long leg of LED to pin 13\n2️⃣ Short leg to GND through resistor",
         code: [
-          "// LED Blink Example",
+          "// Your Arduino code:",
           "int ledPin = 13;",
           "void setup() { pinMode(ledPin, OUTPUT); }",
-          "void loop() { digitalWrite(ledPin, HIGH); delay(1000); digitalWrite(ledPin, LOW); delay(1000); }"
+          "void loop() {",
+          "  digitalWrite(ledPin, HIGH); delay(1000);",
+          "  digitalWrite(ledPin, LOW); delay(1000);",
+          "}"
         ]
       },
       "2": {
-        materials: "Required components:\n🔹 Arduino Uno\n🔹 LED\n🔹 220Ω resistor\n🔹 Button\n🔹 Jumper wires\n🔹 Breadboard",
-        steps: "Circuit:\n1️⃣ Button to pin 2 and GND\n2️⃣ LED long leg to pin 13, short to GND via resistor",
+        materials: "Materials needed:\n🔹 Arduino\n🔹 Button\n🔹 LED\n🔹 220Ω Resistor\n🔹 Wires",
+        steps: "Steps:\n1️⃣ Button to pin 2 and GND\n2️⃣ LED to pin 13 through resistor",
         code: [
-          "// LED with Button",
-          "int ledPin = 13; int buttonPin = 2;",
-          "void setup() { pinMode(ledPin, OUTPUT); pinMode(buttonPin, INPUT); }",
+          "// Your Arduino code:",
+          "int ledPin = 13, buttonPin = 2, buttonState = 0;",
+          "void setup() {",
+          "  pinMode(ledPin, OUTPUT); pinMode(buttonPin, INPUT);",
+          "}",
           "void loop() {",
-          "  if (digitalRead(buttonPin) == HIGH) digitalWrite(ledPin, HIGH);",
-          "  else digitalWrite(ledPin, LOW);",
+          "  buttonState = digitalRead(buttonPin);",
+          "  digitalWrite(ledPin, buttonState);",
           "}"
         ]
       },
       "3": {
-        materials: "Required components:\n🔹 Arduino Uno\n🔹 DHT11 Sensor\n🔹 Jumper wires",
-        steps: "Circuit:\n1️⃣ DHT VCC to 5V\n2️⃣ GND to GND\n3️⃣ Data to pin 2",
+        materials: "Materials needed:\n🔹 Arduino\n🔹 DHT11 Sensor\n🔹 Jumper wires",
+        steps: "Steps:\n1️⃣ VCC to 5V\n2️⃣ GND to GND\n3️⃣ Data to pin 2",
         code: [
-          "// DHT11 Sensor Example",
+          "// Your Arduino code:",
           "#include <DHT.h>",
           "#define DHTPIN 2",
           "#define DHTTYPE DHT11",
           "DHT dht(DHTPIN, DHTTYPE);",
           "void setup() { Serial.begin(9600); dht.begin(); }",
           "void loop() {",
-          "  float h = dht.readHumidity(); float t = dht.readTemperature();",
-          "  if (isnan(h) || isnan(t)) { Serial.println(\"Failed to read\"); return; }",
-          "  Serial.print(\"Humidity: \"); Serial.print(h);",
-          "  Serial.print(\" %, Temp: \"); Serial.print(t); Serial.println(\" C\");",
-          "  delay(2000);"
+          "  float t = dht.readTemperature();",
+          "  float h = dht.readHumidity();",
+          "  Serial.print(\"Temp: \"); Serial.println(t);",
+          "  Serial.print(\"Humidity: \"); Serial.println(h);",
+          "  delay(2000);",
+          "}"
         ]
       },
       "4": {
-        materials: "Required components:\n🔹 Arduino Uno\n🔹 Servo motor\n🔹 Jumper wires",
-        steps: "Circuit:\n1️⃣ Servo signal to pin 9\n2️⃣ VCC to 5V\n3️⃣ GND to GND",
+        materials: "Materials needed:\n🔹 Arduino\n🔹 Servo Motor\n🔹 Jumper wires",
+        steps: "Steps:\n1️⃣ Servo signal to pin 9\n2️⃣ VCC to 5V\n3️⃣ GND to GND",
         code: [
-          "// Servo Motor Example",
+          "// Your Arduino code:",
           "#include <Servo.h>",
           "Servo myServo;",
           "void setup() { myServo.attach(9); }",
-          "void loop() { myServo.write(0); delay(1000); myServo.write(180); delay(1000); }"
+          "void loop() {",
+          "  myServo.write(0); delay(1000);",
+          "  myServo.write(90); delay(1000);",
+          "  myServo.write(180); delay(1000);",
+          "}"
         ]
       },
       "5": {
-        materials: "Required components:\n🔹 Arduino Uno\n🔹 16x2 LCD\n🔹 Potentiometer\n🔹 Jumper wires",
-        steps: "Circuit:\n1️⃣ Connect LCD pins RS, E, D4-D7 to Arduino\n2️⃣ Potentiometer to adjust contrast",
+        materials: "Materials needed:\n🔹 Arduino\n🔹 16x2 LCD (I2C)\n🔹 Wires",
+        steps: "Steps:\n1️⃣ Connect I2C: SDA to A4, SCL to A5, VCC, GND",
         code: [
-          "// LCD Display Example",
-          "#include <LiquidCrystal.h>",
-          "LiquidCrystal lcd(12, 11, 5, 4, 3, 2);",
-          "void setup() { lcd.begin(16, 2); lcd.print(\"Hello, World!\"); }",
-          "void loop() { }"
+          "// Your Arduino code:",
+          "#include <Wire.h>",
+          "#include <LiquidCrystal_I2C.h>",
+          "LiquidCrystal_I2C lcd(0x27, 16, 2);",
+          "void setup() {",
+          "  lcd.begin(); lcd.backlight();",
+          "  lcd.setCursor(0,0); lcd.print(\"Hello, world!\");",
+          "}",
+          "void loop() {}"
         ]
       }
     };
 
     const p = details[choice];
-    if (!p) {
-      await slowPrint("Sorry, that option is not available yet. 😔");
-      return;
-    }
+    if (!p) return;
 
     await slowPrint(p.materials);
     await slowPrint(p.steps);
-    await slowPrint("Here is your Arduino code:");
     for (const line of p.code) {
       await slowPrint(line, 50);
     }
 
-    await slowPrint("Do you need help with anything else? 😊");
     state.step = 2;
   }
 
+  // Start interaction
   askIdeStatus();
 </script>
 
