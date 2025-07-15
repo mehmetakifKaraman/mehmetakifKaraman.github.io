@@ -21,16 +21,23 @@
       padding: 20px 40px;
       font-weight: bold;
       flex-wrap: wrap;
+      position: relative;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     nav a {
-      margin-left: 15px;
       text-decoration: none;
       color: white;
       background-color: #333;
       padding: 6px 12px;
       border-radius: 20px;
       font-weight: bold;
+      white-space: nowrap;
     }
 
     nav a:hover {
@@ -45,11 +52,60 @@
       padding: 6px 12px;
       border-radius: 20px;
       font-weight: bold;
-      margin-left: 20px;
+      margin-left: 10px;
+      white-space: nowrap;
     }
 
     .theme-toggle:hover {
       background-color: #555;
+    }
+
+    /* Hamburger menu button */
+    .menu-toggle {
+      display: none;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-size: 28px;
+      color: white;
+      padding: 0;
+      margin-left: 10px;
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      header {
+        padding: 15px 20px;
+      }
+
+      nav {
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        background-color: #111;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 20px;
+        border-radius: 10px;
+        display: none; /* Hidden by default */
+        width: 200px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        z-index: 1000;
+      }
+
+      nav.show {
+        display: flex;
+      }
+
+      nav a, .theme-toggle {
+        width: 100%;
+        margin: 8px 0;
+        box-sizing: border-box;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
     }
 
     .hero {
@@ -137,6 +193,7 @@
       color: #555;
     }
 
+    /* Light mode styles */
     .light-mode {
       background-color: #fff;
       color: #000;
@@ -176,12 +233,13 @@
 <body>
   <header>
     <div>https://mehmetakifkaraman.github.io/</div>
+    <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
     <nav>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
       <a href="arduino.html">Arduino Tutorials</a>
-      <a href="project-submission.html">Submit Your Project</a> <!-- ✅ Translated -->
-      <a href="projects.html">View Projects</a> <!-- ✅ Translated -->
+      <a href="project-submission.html">Submit Your Project</a>
+      <a href="projects.html">View Projects</a>
       <a href="arai.html">ARAI</a>
 
       <button class="theme-toggle" onclick="toggleTheme()">🌗</button>
@@ -232,9 +290,28 @@
   </footer>
 
   <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('nav');
+
+    menuToggle.addEventListener('click', () => {
+      const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+      menuToggle.setAttribute('aria-expanded', !isExpanded);
+      nav.classList.toggle('show');
+    });
+
     function toggleTheme() {
       document.body.classList.toggle('light-mode');
     }
+
+    // Mobilde menü linkine tıklayınca menüyü kapat
+    nav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if(window.innerWidth <= 768) {
+          nav.classList.remove('show');
+          menuToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
   </script>
 </body>
 </html>
